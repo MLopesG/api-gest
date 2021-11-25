@@ -1,7 +1,6 @@
-create database gestfro;
 
 CREATE TABLE usuario (
-  id serial,
+  id serial PRIMARY KEY,
   nome VARCHAR(255),
   is_ativo boolean default true,
   senha VARCHAR(255),
@@ -9,6 +8,7 @@ CREATE TABLE usuario (
   email VARCHAR(255),
   created_at TIMESTAMP default now(),
   updated_at TIMESTAMP default now()
+  
 );
 
 CREATE TABLE categoria(
@@ -22,7 +22,7 @@ CREATE TABLE categoria(
 );
 
 CREATE TABLE veiculo (
-	id_veiculo serial PRIMARY KEY,
+	id serial PRIMARY KEY,
 	placa VARCHAR(255),
 	descricao VARCHAR(255),	
 	categoria_id INTEGER,
