@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func hashPassword(password string) (string, error) {
+func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
 }
@@ -36,7 +36,7 @@ func Cadastrar(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": false, "message": "Corpo inválido!", "error": err})
 	}
 
-	hash, err := hashPassword(usuario.Senha)
+	hash, err := HashPassword(usuario.Senha)
 
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": false, "message": "Não foi possivel realizar cadastro, verifique sua senha.", "error": err})
@@ -117,7 +117,7 @@ func Alterar(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": false, "message": "Corpo inválido!", "usuario": err})
 	}
 
-	hash, err := hashPassword(usuarioAlterar.Senha)
+	hash, err := HashPassword(usuarioAlterar.Senha)
 
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": false, "message": "Não foi possivel realizar cadastro, verifique sua senha.", "error": err})
