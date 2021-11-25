@@ -5,13 +5,7 @@ import (
 	"gestfro/model"
 
 	"github.com/gofiber/fiber/v2"
-	"golang.org/x/crypto/bcrypt"
 )
-
-func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes), err
-}
 
 func Usuarios(c *fiber.Ctx) error {
 	db := database.DB
@@ -90,14 +84,6 @@ func Deletar(c *fiber.Ctx) error {
 }
 
 func Alterar(c *fiber.Ctx) error {
-	type usuarioUpdate struct {
-		Nome    string `json:"nome"`
-		IsAtivo bool   `json:"is_ativo"`
-		Senha   string `json:"senha"`
-		Cpf     string `json:"cpf"`
-		Email   string `json:"email"`
-	}
-
 	db := database.DB
 	var usuario model.Usuario
 
@@ -109,7 +95,7 @@ func Alterar(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{"status": false, "message": "Identificador do usuário não informado!", "usuario": nil})
 	}
 
-	var usuarioAlterar usuarioUpdate
+	var usuarioAlterar model.UsuarioUpdate
 
 	err := c.BodyParser(&usuarioAlterar)
 
