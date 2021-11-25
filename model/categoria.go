@@ -1,7 +1,7 @@
 package model
 
 type Categoria struct {
-	Id                    int64             `json:"id"`
+	Id                    int               `json:"id" `
 	Nome                  string            `json:"nome"`
 	IsCategoriaProduto    bool              `json:"is_categoria_produto"`
 	IsCategoriaManutencao bool              `json:"is_categoria_manutencao"`
