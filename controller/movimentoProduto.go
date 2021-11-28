@@ -68,7 +68,7 @@ func RegistrarSaidaEntradaProduto(c *fiber.Ctx) error {
 	}
 
 	if !movimento.IsEntrada {
-		if produto.Quantidade < movimento.Quantidade {
+		if produto.Quantidade < movimento.Quantidade || movimento.Quantidade < 0 {
 			return c.Status(417).JSON(fiber.Map{"status": false, "message": "Quantidade selecionada não está disponivel no estoque!", "produto": produto})
 		}else{
 			/// Descontar produto retirado do estoque
