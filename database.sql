@@ -46,6 +46,21 @@ CREATE TABLE manutencao (
 	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
 );
 
+CREATE TABLE movimento_veiculo (
+	id serial PRIMARY KEY,
+	data_saida_entrada timestamp,
+	data_retorno_chegada timestamp,
+	km_saida INTEGER,
+	km_entrada INTEGER,
+	usuario_id INTEGER,
+	tipo_movimento VARCHAR(255),
+	veiculo_id INTEGER,
+	created_at timestamp default now(),
+	updated_at timestamp default now(),
+	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
+	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
+);
+
 CREATE TABLE produto (
 	id serial PRIMARY KEY,
 	nome VARCHAR(100),
@@ -66,20 +81,5 @@ CREATE TABLE movimento_produto (
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
 	FOREIGN KEY(produto_id) REFERENCES produto (id),
-	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
-);
-
-CREATE TABLE movimento_veiculo (
-	id serial PRIMARY KEY,
-	data_saida_entrada timestamp,
-	data_retorno_chegada timestamp,
-	km_saida INTEGER,
-	km_entrada INTEGER,
-	usuario_id INTEGER,
-	tipo_movimento VARCHAR(255),
-	veiculo_id INTEGER,
-	created_at timestamp default now(),
-	updated_at timestamp default now(),
-	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
 	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
 );

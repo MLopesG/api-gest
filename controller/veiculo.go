@@ -107,7 +107,7 @@ func AlterarVeiculo(c *fiber.Ctx) error {
 	err := c.BodyParser(&veiculoAlterar)
 
 	if err != nil {
-		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Não foi possivel realizar cadastro, verifique sua senha.", "error": err})
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Não foi possivel alterar registro!", "error": err})
 	}
 
 	veiculo.Placa = veiculoAlterar.Placa
