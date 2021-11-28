@@ -3,6 +3,8 @@ package main
 import (
 	"gestfro/database"
 	"gestfro/router"
+	"gestfro/config"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -10,6 +12,7 @@ import (
 )
 
 func main() {
+	
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
@@ -17,11 +20,11 @@ func main() {
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
-	app.Get("/monitor", monitor.New())
+	app.Get("/", monitor.New())
 	
 	database.ConnectDB()
 
 	router.SetupRoutes(app)
 
-	app.Listen(":3000")
+	app.Listen(fmt.Sprintf(":%s", config.Config("PORT")))
 }
