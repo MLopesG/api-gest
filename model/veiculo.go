@@ -1,10 +1,12 @@
 package model
 
+import "github.com/go-playground/validator/v10"
+
 type Veiculo struct {
 	Id          int               `json:"id"`
-	Placa       string            `json:"placa"`
-	Descricao   string            `json:"descricao"`
-	CategoriaId int               `json:"categoria_id"`
+	Placa       string            `json:"placa"  validate:"required"`
+	Descricao   string            `json:"descricao"  validate:"required"`
+	CategoriaId int               `json:"categoria_id"  validate:"required"`
 	IsServico   bool              `json:"is_servico"`
 	CreatedAt   DateFormattedTime `json:"created_at"`
 	UpdatedAt   DateFormattedTime `json:"updated_at"`
@@ -15,7 +17,7 @@ type VeiculoCategoria struct {
 	Placa                 string `json:"placa"`
 	CategoriaId           int    `json:"categoria_id"`
 	NomeCategoria         string `json:"nome_categoria"`
-	Descricao             string `json:"descricao"`
+	Descricao             string `json:"descricao"` 
 	IsServico             bool   `json:"is_servico"`
 	IsCategoriaProduto    bool   `json:"is_categoria_produto"`
 	IsCategoriaManutencao bool   `json:"is_categoria_manutencao"`
@@ -27,4 +29,19 @@ type VeiculoUpdate struct {
 	Descricao   string `json:"descricao"`
 	CategoriaId int    `json:"categoria_id"`
 	IsServico   bool   `json:"is_servico"`
+}
+
+func ValidateVeiculo(veiculo Veiculo) []*ErrorResponse {
+    var errors []*ErrorResponse
+    validate := validator.New()
+    err := validate.Struct(veiculo)
+    if err != nil {
+        for _, err := range err.(validator.ValidationErrors) {
+            var element ErrorResponse
+            element.Input = err.StructField()
+            element.Value = "Campo é obrigatório!"
+            errors = append(errors, &element)
+        }
+    }
+    return errors
 }

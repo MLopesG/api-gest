@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"gestfro/handler"
+	"gestfro/controller"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,9 +10,9 @@ func SetupRotasUsuario(router fiber.Router) {
 
 	routerFiber := router.Group("/usuarios")
 
-	routerFiber.Post("/", handler.Cadastrar)
-	routerFiber.Get("/", handler.Usuarios)
-	routerFiber.Get("/:id", handler.Usuario)
-	routerFiber.Put("/:id", handler.Alterar)
-	routerFiber.Delete("/:id", handler.Deletar)
+	routerFiber.Post("/", controller.Cadastrar)
+	routerFiber.Get("/", controller.Usuarios)
+	routerFiber.Get("/:id", controller.Usuario)
+	routerFiber.Put("/:id", controller.Alterar)
+	routerFiber.Delete("/:id", controller.Deletar)
 }

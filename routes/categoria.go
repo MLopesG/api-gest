@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"gestfro/handler"
+	"gestfro/controller"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,9 +10,9 @@ func SetupRotasCategoria(router fiber.Router) {
 
 	routerFiber := router.Group("/categorias")
 
-	routerFiber.Post("/", handler.CadastrarCategoria)
-	routerFiber.Get("/", handler.Categorias)
-	routerFiber.Get("/:id", handler.Categoria)
-	routerFiber.Put("/:id", handler.AlterarCategoria)
-	routerFiber.Delete("/:id", handler.DeletarCategoria)
+	routerFiber.Post("/", controller.CadastrarCategoria)
+	routerFiber.Get("/", controller.Categorias)
+	routerFiber.Get("/:id", controller.Categoria)
+	routerFiber.Put("/:id", controller.AlterarCategoria)
+	routerFiber.Delete("/:id", controller.DeletarCategoria)
 }

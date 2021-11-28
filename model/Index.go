@@ -15,3 +15,8 @@ func (s DateFormattedTime) MarshalJSON() ([]byte, error) {
 
 	return []byte(t.Format(`"Jan 02, 2006"`)), nil
 }
+
+type ErrorResponse struct {
+    Input string  `json:"input"`
+    Value       string  `json:"value"`
+}
