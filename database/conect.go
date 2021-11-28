@@ -30,5 +30,5 @@ func ConnectDB() {
 		panic("Falha ao conectar!")
 	}
 
-	fmt.Println("Conexão realizada com sucesso!")
+	fmt.Println("Instância com o banco de dados foi inciada com sucesso!");
 }

@@ -11,7 +11,16 @@ func Veiculos(c *fiber.Ctx) error {
 	db := database.DB
 	var veiculos []model.VeiculoCategoria
 
-	db.Table("veiculo").Select("veiculo.*, categoria.nome as nome_categoria, categoria.is_categoria_produto, categoria.is_categoria_manutencao, categoria.is_categoria_veiculo").Joins("left join categoria on categoria.id = veiculo.categoria_id").Order("categoria.id desc").Find(&veiculos)
+	db.Raw(`
+		select veiculo.*, 
+			categoria.nome as nome_categoria, 
+			categoria.is_categoria_produto, 
+			categoria.is_categoria_manutencao, 
+			categoria.is_categoria_veiculo 
+		from veiculo
+		left join categoria on categoria.id = veiculo.categoria_id
+		order by categoria.id desc
+	`).Scan(&veiculos)
 
 	if len(veiculos) == 0 {
 		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Nenhum veiculo cadastrado", "veiculo": nil})
