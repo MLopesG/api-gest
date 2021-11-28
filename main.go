@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
 func main() {
@@ -16,6 +17,8 @@ func main() {
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
+	app.Get("/monitor", monitor.New())
+	
 	database.ConnectDB()
 
 	router.SetupRoutes(app)
