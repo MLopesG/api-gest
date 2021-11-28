@@ -3,7 +3,8 @@ package model
 import "github.com/go-playground/validator/v10"
 
 type Produto struct {
-	Id                   int               `json:"id"`
+	Id                   int64               `json:"id"`
+    Quantidade           int64               `json:"quantidade"`
 	Nome                 string            `json:"nome"  validate:"required"`
 	DataEntradaEstoque   DateFormattedTime  `json:"data_entrada_estoque" validate:"required"`
 	CategoriaId          int64              `json:"categoria_id" validate:"required"`
@@ -13,13 +14,14 @@ type Produto struct {
 
 type ProdutoUpdate struct {
     Nome                 string            `json:"nome"`
+    Quantidade           int64               `json:"id"`
 	DataEntradaEstoque   DateFormattedTime  `json:"data_entrada_estoque"`
 	CategoriaId          int64              `json:"categoria_id"`
 }
 
 type ProdutoCategoria struct {
-    Id            int         `json:"id"`
-    Quantidade    int         `json:"quantidade"`
+    Id            int64         `json:"id"`
+    Quantidade    int64         `json:"quantidade"`
     Nome          string       `json:"nome"`
     CategoriaId   int64        `json:"categoria_id"`
 	NomeCategoria          string       `json:"nome_categoira"`

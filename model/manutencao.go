@@ -22,7 +22,7 @@ type ManutencaoUpdate struct {
 }
 
 type ManutencaoVeiculoUsuarioCategoria struct {
-	Id     int     `json:"id"`
+	Id     int64     `json:"id"`
 	Placa  string  `json:"placa"`
 	Usuario   string  `json:"usuario"`
 	KmAtual  	int64   `json:"km_atual"`
