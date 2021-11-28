@@ -18,7 +18,8 @@ type ProdutoUpdate struct {
 }
 
 type ProdutoCategoria struct {
-    Id            int               `json:"id"`
+    Id            int         `json:"id"`
+    Quantidade    int         `json:"quantidade"`
     Nome          string       `json:"nome"`
     CategoriaId   int64        `json:"categoria_id"`
 	NomeCategoria          string       `json:"nome_categoira"`

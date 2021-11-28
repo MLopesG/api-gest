@@ -15,6 +15,7 @@ func Produtos(c *fiber.Ctx) error {
 		`select 
 		 	produto.id, 
 		 	produto.nome, 
+			produto.quantidade, 
 			categoria.id as categoria_id,
 			categoria.nome as nome_categoria
 		 from produto
