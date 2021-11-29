@@ -14,7 +14,7 @@ CREATE TABLE categoria(
 	id serial PRIMARY KEY,
 	nome VARCHAR(100),
 	is_categoria_produto boolean default false,
-	is_categoria_manutencao boolean default false,
+	is_categoria_tipo_manutencao boolean default false,
 	is_categoria_veiculo boolean default false,
 	created_at timestamp default now(),
 	updated_at timestamp default now()
@@ -35,19 +35,30 @@ CREATE TABLE veiculo (
 	FOREIGN KEY(categoria_id) REFERENCES categoria (id)
 );
 
+CREATE TABLE tipo_manutencao(
+	id serial PRIMARY KEY,
+	descricao VARCHAR(255),
+	km_previsto INTEGER default 0,
+	intervalo_previsto INTEGER,
+	categoria_id INTEGER,
+	created_at timestamp default now(),
+	updated_at timestamp default now(),
+	FOREIGN KEY(categoria_id) REFERENCES categoria (id)
+);
+
 CREATE TABLE manutencao (
 	id serial PRIMARY KEY,
 	km_atual INTEGER,
 	descricao text,
 	veiculo_id INTEGER,
-	categoria_id INTEGER,
+	tipo_manutencao_id INTEGER,
 	usuario_id INTEGER,
 	is_finalizado boolean default false,
 	veiculo_id_temporario INTEGER,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
 	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
-	FOREIGN KEY(categoria_id) REFERENCES categoria (id),
+	FOREIGN KEY(tipo_manutencao_id) REFERENCES tipo_manutencao (id),
 	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
 );
 
