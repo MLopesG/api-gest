@@ -51,27 +51,27 @@ CREATE TABLE manutencao (
 	km_atual INTEGER,
 	descricao text,
 	veiculo_id INTEGER,
-	tipo_manutencao_id INTEGER,
 	usuario_id INTEGER,
 	is_finalizado boolean default false,
 	veiculo_id_temporario INTEGER,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
 	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
-	FOREIGN KEY(tipo_manutencao_id) REFERENCES tipo_manutencao (id),
 	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
 );
 
 CREATE TABLE manutencao_previsao (
 	id serial PRIMARY KEY,
 	km_previsao INTEGER,
-	is_finalizado boolean default false,
 	data_previsao date,
-	manutencao_id INTEGER,
+	tipo_manutencao_id INTEGER,
+	id_manutencao INTEGER,
+	is_confirmado boolean default false,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
 	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
-	FOREIGN KEY(manutencao_id) REFERENCES manutencao (id)
+	FOREIGN KEY(tipo_manutencao_id) REFERENCES tipo_manutencao (id),
+	FOREIGN KEY(id_manutencao) REFERENCES manutencao (id)
 );
 
 CREATE TABLE movimento_veiculo (
