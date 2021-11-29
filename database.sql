@@ -34,45 +34,6 @@ CREATE TABLE veiculo (
 	FOREIGN KEY(categoria_id) REFERENCES categoria (id)
 );
 
-CREATE TABLE manutencao_tipo(
-	id serial PRIMARY KEY,
-	descricao VARCHAR(255),
-	km_previsto INTEGER default 0,
-	intervalo_previsto INTEGER,
-	categoria_id INTEGER,
-	created_at timestamp default now(),
-	updated_at timestamp default now(),
-	FOREIGN KEY(categoria_id) REFERENCES categoria (id)
-);
-
-CREATE TABLE manutencao (
-	id serial PRIMARY KEY,
-	km_atual INTEGER,
-	descricao text,
-	veiculo_id INTEGER,
-	usuario_id INTEGER,
-	is_finalizado boolean default false,
-	is_cancelado boolean default false,
-	veiculo_id_temporario INTEGER,
-	created_at timestamp default now(),
-	updated_at timestamp default now(),
-	cancelado_em date ,
-	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
-	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
-);
-
-CREATE TABLE manutencao_previsao (
-	id serial PRIMARY KEY,
-	km_previsao INTEGER,
-	data_previsao date,
-	manutencao_tipo_id INTEGER,
-	manutencao_id INTEGER,
-	is_confirmado boolean default false,
-	created_at timestamp default now(),
-	updated_at timestamp default now(),
-	FOREIGN KEY(manutencao_tipo_id) REFERENCES manutencao_tipo (id)
-);
-
 CREATE TABLE movimento_veiculo (
 	id serial PRIMARY KEY,
 	data_saida_entrada timestamp,
@@ -111,4 +72,43 @@ CREATE TABLE movimento_produto (
 	updated_at timestamp default now(),
 	FOREIGN KEY(produto_id) REFERENCES produto (id),
 	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
+);
+
+CREATE TABLE manutencao_tipo(
+	id serial PRIMARY KEY,
+	descricao VARCHAR(255),
+	km_previsto INTEGER default 0,
+	intervalo_previsto INTEGER,
+	categoria_id INTEGER,
+	created_at timestamp default now(),
+	updated_at timestamp default now(),
+	FOREIGN KEY(categoria_id) REFERENCES categoria (id)
+);
+
+CREATE TABLE manutencao (
+	id serial PRIMARY KEY,
+	km_atual INTEGER,
+	descricao text,
+	veiculo_id INTEGER,
+	usuario_id INTEGER,
+	is_finalizado boolean default false,
+	is_cancelado boolean default false,
+	veiculo_id_temporario INTEGER,
+	created_at timestamp default now(),
+	updated_at timestamp default now(),
+	cancelado_em date ,
+	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
+	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
+);
+
+CREATE TABLE manutencao_previsao (
+	id serial PRIMARY KEY,
+	km_previsao INTEGER,
+	data_previsao date,
+	manutencao_tipo_id INTEGER,
+	manutencao_id INTEGER,
+	is_confirmado boolean default false,
+	created_at timestamp default now(),
+	updated_at timestamp default now(),
+	FOREIGN KEY(manutencao_tipo_id) REFERENCES manutencao_tipo (id)
 );
