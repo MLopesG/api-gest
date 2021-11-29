@@ -138,5 +138,5 @@ CREATE table abastecimento(
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
 	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
-	FOREIGN KEY(distribuidora_id) REFERENCES abastecimento_distribuidora (id),
+	FOREIGN KEY(distribuidora_id) REFERENCES abastecimento_distribuidora (id)
 )
