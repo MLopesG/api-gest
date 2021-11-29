@@ -17,6 +17,6 @@ func (s DateFormattedTime) MarshalJSON() ([]byte, error) {
 }
 
 type ErrorResponse struct {
-    Input string  `json:"input"`
-    Value       string  `json:"value"`
+	Input string `json:"input"`
+	Value string `json:"value"`
 }

@@ -13,7 +13,6 @@ func SetupRoutes(app *fiber.App) {
 	routes.SetupRotasUsuario(api)
 	routes.SetupRotasCategoria(api)
 	routes.SetupRotasVeiculo(api)
-	routes.SetupRotasManutencao(api)
 	routes.SetupRotasMovimentoVeiculo(api)
 	routes.SetupRotasProduto(api)
 	routes.SetupRotasMovimentoProduto(api)
