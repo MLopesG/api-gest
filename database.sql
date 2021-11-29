@@ -65,13 +65,11 @@ CREATE TABLE manutencao_previsao (
 	km_previsao INTEGER,
 	data_previsao date,
 	tipo_manutencao_id INTEGER,
-	id_manutencao INTEGER,
+	manutencao_id INTEGER,
 	is_confirmado boolean default false,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
-	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
-	FOREIGN KEY(tipo_manutencao_id) REFERENCES tipo_manutencao (id),
-	FOREIGN KEY(id_manutencao) REFERENCES manutencao (id)
+	FOREIGN KEY(tipo_manutencao_id) REFERENCES tipo_manutencao (id)
 );
 
 CREATE TABLE movimento_veiculo (
