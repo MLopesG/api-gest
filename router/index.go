@@ -8,7 +8,7 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
-	api := app.Group("/api/v1/gestfro", logger.New())
+	api := app.Group("/api/v1", logger.New())
 
 	routes.SetupRotasUsuario(api)
 	routes.SetupRotasCategoria(api)
