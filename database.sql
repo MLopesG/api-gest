@@ -38,20 +38,29 @@ CREATE TABLE veiculo (
 CREATE TABLE manutencao (
 	id serial PRIMARY KEY,
 	km_atual INTEGER,
-	km_proxima INTEGER,
 	descricao text,
 	veiculo_id INTEGER,
 	categoria_id INTEGER,
 	usuario_id INTEGER,
-	is_previsao boolean default false,
 	is_finalizado boolean default false,
 	veiculo_id_temporario INTEGER,
-	data_proxima_manutencao date,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
 	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
 	FOREIGN KEY(categoria_id) REFERENCES categoria (id),
 	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
+);
+
+CREATE TABLE manutencao_previsao (
+	id serial PRIMARY KEY,
+	km_previsao INTEGER,
+	is_finalizado boolean default false,
+	data_previsao date,
+	manutencao_id INTEGER,
+	created_at timestamp default now(),
+	updated_at timestamp default now(),
+	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
+	FOREIGN KEY(manutencao_id) REFERENCES manutencao (id)
 );
 
 CREATE TABLE movimento_veiculo (
