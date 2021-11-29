@@ -35,7 +35,7 @@ CREATE TABLE veiculo (
 	FOREIGN KEY(categoria_id) REFERENCES categoria (id)
 );
 
-CREATE TABLE tipo_manutencao(
+CREATE TABLE manutencao_tipo(
 	id serial PRIMARY KEY,
 	descricao VARCHAR(255),
 	km_previsto INTEGER default 0,
@@ -64,12 +64,12 @@ CREATE TABLE manutencao_previsao (
 	id serial PRIMARY KEY,
 	km_previsao INTEGER,
 	data_previsao date,
-	tipo_manutencao_id INTEGER,
+	manutencao_tipo_id INTEGER,
 	manutencao_id INTEGER,
 	is_confirmado boolean default false,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
-	FOREIGN KEY(tipo_manutencao_id) REFERENCES tipo_manutencao (id)
+	FOREIGN KEY(manutencao_tipo_id) REFERENCES manutencao_tipo (id)
 );
 
 CREATE TABLE movimento_veiculo (
