@@ -1,4 +1,3 @@
-
 CREATE TABLE usuario (
   id serial PRIMARY KEY,
   nome VARCHAR(255),
@@ -27,6 +26,10 @@ CREATE TABLE veiculo (
 	descricao VARCHAR(255),	
 	categoria_id INTEGER,
 	is_servico boolean default true,
+	is_reserva boolean default false,
+	is_disponivel boolean default true,
+	is_indisponivel boolean default false,
+	is_substituido boolean default false,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
 	FOREIGN KEY(categoria_id) REFERENCES categoria (id)
@@ -35,10 +38,15 @@ CREATE TABLE veiculo (
 CREATE TABLE manutencao (
 	id serial PRIMARY KEY,
 	km_atual INTEGER,
+	km_proxima INTEGER,
 	descricao text,
 	veiculo_id INTEGER,
 	categoria_id INTEGER,
 	usuario_id INTEGER,
+	is_previsao boolean default false,
+	is_finalizado boolean default false,
+	veiculo_id_temporario INTEGER,
+	data_proxima_manutencao date,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
 	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
