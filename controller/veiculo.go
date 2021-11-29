@@ -41,9 +41,9 @@ func CadastrarVeiculo(c *fiber.Ctx) error {
 
 	errors := model.ValidateVeiculo(*veiculo)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
 
 	err = db.Table("veiculo").Create(&veiculo).Error
 
@@ -92,7 +92,7 @@ func DeletarVeiculo(c *fiber.Ctx) error {
 
 func AlterarVeiculo(c *fiber.Ctx) error {
 	db := database.DB
-	veiculo  := new(model.Veiculo)
+	veiculo := new(model.Veiculo)
 
 	id := c.Params("id")
 
@@ -114,12 +114,16 @@ func AlterarVeiculo(c *fiber.Ctx) error {
 	veiculo.Descricao = veiculoAlterar.Descricao
 	veiculo.CategoriaId = veiculoAlterar.CategoriaId
 	veiculo.IsServico = veiculoAlterar.IsServico
+	veiculo.IsReserva = veiculoAlterar.IsReserva
+	veiculo.IsDisponivel = veiculoAlterar.IsDisponivel
+	veiculo.IsIndisponivel = veiculoAlterar.IsIndisponivel
+	veiculo.IsSubstituido = veiculoAlterar.IsSubstituido
 
 	errors := model.ValidateVeiculo(*veiculo)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
 
 	db.Table("veiculo").Save(&veiculo)
 

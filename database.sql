@@ -7,7 +7,6 @@ CREATE TABLE usuario (
   email VARCHAR(255),
   created_at TIMESTAMP default now(),
   updated_at TIMESTAMP default now()
-  
 );
 
 CREATE TABLE categoria(
@@ -53,9 +52,11 @@ CREATE TABLE manutencao (
 	veiculo_id INTEGER,
 	usuario_id INTEGER,
 	is_finalizado boolean default false,
+	is_cancelado boolean default false,
 	veiculo_id_temporario INTEGER,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
+	cancelado_em date ,
 	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
 	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
 );

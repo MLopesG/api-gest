@@ -29,12 +29,12 @@ func CadastrarCategoria(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Corpo inválido!", "error": err})
 	}
-	
+
 	errors := model.ValidateCategoria(*categoria)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
 
 	err = db.Table("categoria").Create(&categoria).Error
 
@@ -103,14 +103,14 @@ func AlterarCategoria(c *fiber.Ctx) error {
 
 	categoria.Nome = categoriaAlterar.Nome
 	categoria.IsCategoriaProduto = categoriaAlterar.IsCategoriaProduto
-	categoria.IsCategoriaManutencao = categoriaAlterar.IsCategoriaManutencao
+	categoria.IsCategoriaTipoManutencao = categoriaAlterar.IsCategoriaTipoManutencao
 	categoria.IsCategoriaVeiculo = categoriaAlterar.IsCategoriaVeiculo
 
 	errors := model.ValidateCategoria(*categoria)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
 
 	db.Table("categoria").Save(&categoria)
 
