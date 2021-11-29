@@ -89,6 +89,7 @@ CREATE TABLE manutencao (
 	id serial PRIMARY KEY,
 	km_atual INTEGER,
 	descricao text,
+	valor_pago real,
 	veiculo_id INTEGER,
 	usuario_id INTEGER,
 	is_finalizado boolean default false,
@@ -105,6 +106,7 @@ CREATE TABLE manutencao_previsao (
 	id serial PRIMARY KEY,
 	km_previsao INTEGER,
 	data_previsao date,
+	valor_previsto real,
 	manutencao_tipo_id INTEGER,
 	manutencao_id INTEGER,
 	is_confirmado boolean default false,
@@ -112,3 +114,29 @@ CREATE TABLE manutencao_previsao (
 	updated_at timestamp default now(),
 	FOREIGN KEY(manutencao_tipo_id) REFERENCES manutencao_tipo (id)
 );
+
+create table abastecimento_distribuidora(
+	id serial PRIMARY KEY,
+	nome VARCHAR(255),
+	endereco text
+);
+
+CREATE table abastecimento(
+	id serial PRIMARY KEY,
+	km INTEGER,
+	valor_combustivel real,
+	litros_abastecido real,
+	valor_total real,
+	data_registro date,
+	veiculo_id INTEGER,
+	distribuidora_id INTEGER,
+	is_etanol boolean default false,
+	is_gasolina boolean default false,
+	is_diesel boolean default false,
+	is_pago boolean default false,
+	arquivo_comprovante text,
+	created_at timestamp default now(),
+	updated_at timestamp default now(),
+	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
+	FOREIGN KEY(distribuidora_id) REFERENCES abastecimento_distribuidora (id),
+)
