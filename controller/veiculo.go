@@ -12,14 +12,28 @@ func Veiculos(c *fiber.Ctx) error {
 	var veiculos []model.VeiculoCategoria
 
 	db.Raw(`
-		select veiculo.*, 
-			categoria.nome as nome_categoria, 
-			categoria.is_categoria_produto, 
-			categoria.is_categoria_manutencao, 
-			categoria.is_categoria_veiculo 
-		from veiculo
-		left join categoria on categoria.id = veiculo.categoria_id
-		order by categoria.id desc
+		select 
+			v.id,
+			v.placa,
+			v.descricao,
+			v.categoria_id,
+			c.nome as  nome_categoria,
+			(
+				case
+					when v.is_disponivel then 'Disponivel.'
+					when v.is_substituido then 'Indisponivel(substituido).'
+					else 'Indisponivel.'
+				end
+			) as status_operacao,
+			(
+				case
+					when v.is_servico then 'Titular.'
+					else 'Reserva.'
+				end
+			) as tipo_veiculo
+		from veiculo v
+		left join categoria c on c.id = v.categoria_id
+		order by v.placa desc
 	`).Scan(&veiculos)
 
 	if len(veiculos) == 0 {

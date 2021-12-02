@@ -13,13 +13,20 @@ func Produtos(c *fiber.Ctx) error {
 
 	db.Raw(
 		`select 
-		 	produto.id, 
-		 	produto.nome, 
-			produto.quantidade, 
-			categoria.id as categoria_id,
-			categoria.nome as nome_categoria
-		 from produto
-		 left join categoria on categoria.id = produto.categoria_id
+				produto.id, 
+				produto.nome, 
+				produto.quantidade, 
+				categoria.id as categoria_id,
+				categoria.nome as nome_categoria,
+				(
+				case 
+					when produto.quantidade between 1 and 3 then 'Baixo.'
+					when produto.quantidade = 0 then 'Em falta.'
+					else 'Normal.'
+				end
+				) as status_produto
+			from produto
+			left join categoria on categoria.id = produto.categoria_id
 		`).Scan(&produtos)
 
 	if len(produtos) == 0 {
@@ -38,12 +45,12 @@ func CadastrarProduto(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Corpo inválido!", "error": err})
 	}
-	
+
 	errors := model.ValidateProduto(*produto)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
 
 	err = db.Table("produto").Create(&produto).Error
 
@@ -101,7 +108,7 @@ func AlterarProduto(c *fiber.Ctx) error {
 	if produto.Id == 0 {
 		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Identificador do produto não informado!", "produto": nil})
 	}
-	
+
 	var produtoAlterar model.ProdutoUpdate
 
 	err := c.BodyParser(&produtoAlterar)
@@ -116,9 +123,9 @@ func AlterarProduto(c *fiber.Ctx) error {
 
 	errors := model.ValidateProduto(*produto)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
 
 	db.Table("produto").Save(&produto)
 

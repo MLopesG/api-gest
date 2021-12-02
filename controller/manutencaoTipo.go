@@ -25,7 +25,7 @@ func Tipos(c *fiber.Ctx) error {
 	`).Scan(&tipos)
 
 	if len(tipos) == 0 {
-		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Nenhuma classifciação de manutenção foi cadastrada!", "movimentos": nil})
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Nenhuma classifciação de manutenção foi cadastrada!", "tipos": nil})
 	}
 
 	return c.JSON(fiber.Map{"status": true, "message": nil, "tipos": tipos})

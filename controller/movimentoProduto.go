@@ -19,11 +19,18 @@ func MovimentosEstoque(c *fiber.Ctx) error {
 			usuario.nome as usuario,
 			veiculo.placa as veiculo_placa,
 			(
-				case 
-					when movimento_produto.is_entrada then 'Entrada de Produto.'
-					else 'Saida de Produto.'
-				end
+			case 
+				when movimento_produto.is_entrada then 'Entrada de Produto.'
+				else 'Saida de Produto.'
+			end
 			) as tipo_movimento,
+			(
+			case 
+				when produto.quantidade between 1 and 3 then 'Baixo.'
+				when produto.quantidade = 0 then 'Em falta.'
+				else 'Normal.'
+			end
+			) as status_produto,
 			movimento_produto.quantidade,
 			produto.quantidade as quantidade_em_estoque,
 			movimento_produto.created_at as registrado_em
@@ -56,10 +63,10 @@ func RegistrarSaidaEntradaProduto(c *fiber.Ctx) error {
 
 	errors := model.ValidateMovimentoProduto(*movimento)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
-	
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
+
 	/// Consultar produto
 	db.Table("produto").Find(&produto, "id = ?", movimento.ProdutoId)
 
@@ -70,11 +77,11 @@ func RegistrarSaidaEntradaProduto(c *fiber.Ctx) error {
 	if !movimento.IsEntrada {
 		if produto.Quantidade < movimento.Quantidade || movimento.Quantidade < 0 {
 			return c.Status(417).JSON(fiber.Map{"status": false, "message": "Quantidade selecionada não está disponivel no estoque!", "produto": produto})
-		}else{
+		} else {
 			/// Descontar produto retirado do estoque
 			produto.Quantidade -= movimento.Quantidade
 		}
-	}else{
+	} else {
 		/// Somar quantidade de entrada no produto
 		produto.Quantidade += movimento.Quantidade
 	}
@@ -84,7 +91,7 @@ func RegistrarSaidaEntradaProduto(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Não foi possivel registrar movimento do produto!", "error": err})
 	}
-	
+
 	///Atualizar cadastro do produto com nova quantidade
 	db.Table("produto").Save(&produto)
 

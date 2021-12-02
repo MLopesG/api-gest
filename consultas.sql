@@ -13,6 +13,30 @@ left join usuario on usuario.id = manutencao.usuario_id
 left join veiculo on veiculo.id = manutencao.veiculo_id
 order by manutencao.id desc;
 ----------------------------------------------------
+-- Buscar veiculos cadastrados
+select 
+	v.id,
+	v.placa,
+	v.descricao,
+	v.categoria_id,
+	c.nome as  nome_categoria,
+	(
+		case
+			when v.is_disponivel then 'Disponivel.'
+			when v.is_substituido then 'Indisponivel(substituido).'
+			else 'Indisponivel.'
+		end
+	) as status_operacao,
+	(
+		case
+			when v.is_servico then 'Titular.'
+			else 'Reserva.'
+		end
+	) as tipo_veiculo
+from veiculo v
+left join categoria c on c.id = v.categoria_id
+order by v.placa desc
+----------------------------------------------------
 -- Buscar Movimentações do(s) veiculo(s) registrado(s)
 select
 	movimento_veiculo.id, 
@@ -42,6 +66,13 @@ select
 		else 'Saida de Produto.'
 	  end
 	) as tipo_movimento,
+	(
+	  case 
+		when produto.quantidade between 1 and 3 then 'Baixo.'
+		when produto.quantidade = 0 then 'Em falta.'
+		else 'Normal.'
+	  end
+	) as status_produto,
 	movimento_produto.quantidade,
 	produto.quantidade as quantidade_em_estoque,
 	movimento_produto.created_at as registrado_em
@@ -55,20 +86,20 @@ order by movimento_produto.created_at desc;
 select 
 	produto.id, 
 	produto.nome, 
+	produto.quantidade, 
 	categoria.id as categoria_id,
-	categoria.nome as nome_categoria
- from produto
- left join categoria on categoria.id = produto.categoria_id;
+	categoria.nome as nome_categoria,
+	(
+	  case 
+		when produto.quantidade between 1 and 3 then 'Baixo.'
+		when produto.quantidade = 0 then 'Em falta.'
+		else 'Normal.'
+	  end
+	) as status_produto
+from produto
+left join categoria on categoria.id = produto.categoria_id
 ----------------------------------------------------
--- Consultas básicas
-select * from usuario;
-select * from veiculo;
-select * from categoria;
-select * from produto;
-select * from movimento_produto;
-select * from manutencao;
-----------------------------------------------------
--- Buscar calssificações de manutenções com suas categorias
+-- Buscar classificações de manutenções com suas categorias
 select 
 	t.id,
 	t.descricao,
@@ -79,4 +110,48 @@ select
 from manutencao_tipo t
 inner join categoria c on c.id = t.categoria_id 
 order by t.descricao;
+----------------------------------------------------
+-- Buscar manutenções registradas
+select
+	m.id,
+	m.km_atual,
+	m.descricao, 
+	m.valor_pago,
+	mt.descricao as categoria_manutencao,
+	(
+		case
+			when m.is_finalizado then 'Concluido.'
+			when m.is_andamento then 'Em Andamento.'
+			when m.is_cancelado then 'Cancelado.'
+			else 'Não identificado.'
+		end
+	) as status_manutencao,
+	v.id as id_veiculo_manutencao,
+	v.placa as veiculo_manutencao,
+	(
+		case
+			when vs.descricao is null then 'Veiculo não substituido.'
+			else vs.placa
+		end 
+	) as veiculo_substituto,
+	vs.id as id_veiculo_substituto,
+	u.id as usuario_id,
+	u.nome as usuario,
+	m.cancelado_em,
+	m.created_at as registrado_em
+from manutencao m
+inner join veiculo v on v.id = m.veiculo_id 
+left  join usuario u on u.id = m.usuario_id 
+inner join manutencao_tipo mt on mt.id = m.manutencao_tipo_id 
+left join veiculo vs on vs.id = m.veiculo_id_temporario
+order by m.id desc;
+----------------------------------------------------
+-- Consultas básicas
+select * from usuario;
+select * from veiculo;
+select * from categoria;
+select * from produto;
+select * from movimento_produto;
+select * from manutencao;
+select * from manutencao_tipo;
 ----------------------------------------------------

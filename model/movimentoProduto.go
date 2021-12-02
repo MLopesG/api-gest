@@ -21,6 +21,7 @@ type MovimentoEstoque struct {
 	Usuario             string            `json:"usuario"`
 	VeiculoPlaca        string            `json:"veiculo_placa"`
 	TipoMovimento       string            `json:"tipo_movimento"`
+	StatusProduto       string            `json:"status_produto"`
 	Quantidade          int64             `json:"quantidade"`
 	QuantidadeEmEstoque int64             `json:"quantidade_em_estoque"`
 	RegistradoEm        DateFormattedTime `json:"registrado_em"`

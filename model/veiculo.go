@@ -17,19 +17,13 @@ type Veiculo struct {
 }
 
 type VeiculoCategoria struct {
-	Id                    int64  `json:"id"`
-	Placa                 string `json:"placa"`
-	CategoriaId           int64  `json:"categoria_id"`
-	NomeCategoria         string `json:"nome_categoria"`
-	Descricao             string `json:"descricao"`
-	IsServico             bool   `json:"is_servico"`
-	IsReserva             bool   `json:"is_reserva"`
-	IsDisponivel          bool   `json:"is_disponivel"`
-	IsIndisponivel        bool   `json:"is_indisponivel"`
-	IsSubstituido         bool   `json:"is_substituido"`
-	IsCategoriaProduto    bool   `json:"is_categoria_produto"`
-	IsCategoriaManutencao bool   `json:"is_categoria_manutencao"`
-	IsCategoriaVeiculo    bool   `json:"is_categoria_veiculo"`
+	Id             int64  `json:"id"`
+	Placa          string `json:"placa"`
+	CategoriaId    int64  `json:"categoria_id"`
+	NomeCategoria  string `json:"nome_categoria"`
+	Descricao      string `json:"descricao"`
+	StatusOperacao string `json:"status_operacao"`
+	TipoVeiculo    string `json:"tipo_veiculo"`
 }
 
 type VeiculoUpdate struct {

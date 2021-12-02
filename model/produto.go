@@ -25,6 +25,7 @@ type ProdutoCategoria struct {
 	Nome          string `json:"nome"`
 	CategoriaId   int64  `json:"categoria_id"`
 	NomeCategoria string `json:"nome_categoira"`
+	StatusProduto string `json:"status_produto"`
 }
 
 func ValidateProduto(produto Produto) []*ErrorResponse {
