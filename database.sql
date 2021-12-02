@@ -92,27 +92,29 @@ CREATE TABLE manutencao (
 	valor_pago real,
 	veiculo_id INTEGER,
 	usuario_id INTEGER,
+	manutencao_tipo_id INTEGER,
 	is_finalizado boolean default false,
+	is_andamento boolean default false,
 	is_cancelado boolean default false,
 	veiculo_id_temporario INTEGER,
+	cancelado_em date,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
-	cancelado_em date ,
 	FOREIGN KEY(veiculo_id) REFERENCES veiculo (id),
-	FOREIGN KEY(usuario_id) REFERENCES usuario (id)
+	FOREIGN KEY(usuario_id) REFERENCES usuario (id),
+	FOREIGN KEY(manutencao_tipo_id) REFERENCES manutencao_tipo (id)
 );
 
 CREATE TABLE manutencao_previsao (
 	id serial PRIMARY KEY,
 	km_previsao INTEGER,
 	data_previsao date,
-	valor_previsto real,
-	manutencao_tipo_id INTEGER,
-	manutencao_id INTEGER,
-	is_confirmado boolean default false,
+	ultima_manutencao_id INTEGER,
+	is_aprovado boolean default false,
+	is_cancelado boolean default false,
 	created_at timestamp default now(),
 	updated_at timestamp default now(),
-	FOREIGN KEY(manutencao_tipo_id) REFERENCES manutencao_tipo (id)
+	FOREIGN KEY(ultima_manutencao_id) REFERENCES manutencao (id)
 );
 
 create table abastecimento_distribuidora(

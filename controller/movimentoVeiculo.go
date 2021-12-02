@@ -47,9 +47,9 @@ func RegistrarMovimentoVeicular(c *fiber.Ctx) error {
 
 	errors := model.ValidateMovimentoVeiculo(*movimento)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
 
 	err = db.Table("movimento_veiculo").Create(&movimento).Error
 
@@ -123,12 +123,12 @@ func AlterarRegistroMovimentacaoVeicular(c *fiber.Ctx) error {
 	movimento.KmEntrada = movimentoAlterar.KmEntrada
 	movimento.VeiculoId = movimentoAlterar.VeiculoId
 	movimento.UsuarioId = movimentoAlterar.UsuarioId
-	
+
 	errors := model.ValidateMovimentoVeiculo(*movimento)
 
-    if errors != nil {
-	   return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
-    }
+	if errors != nil {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Preenche os campos corretamente", "errors": errors})
+	}
 
 	db.Table("movimento_veiculo").Save(&movimento)
 
