@@ -3,6 +3,7 @@ package controller
 import (
 	"gestfro/database"
 	"gestfro/model"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -124,7 +125,7 @@ func AlterarManutencao(c *fiber.Ctx) error {
 	db.Table("manutencao").Find(&manutencao, "id = ?", id)
 
 	if manutencao.Id == 0 {
-		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Identificador da manutenção não informada!", "tipo": nil})
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Identificador da manutenção não informada!", "manutencao": nil})
 	}
 	var manutencaoAlterar model.ManutencaoUpdate
 
@@ -132,6 +133,31 @@ func AlterarManutencao(c *fiber.Ctx) error {
 
 	if err != nil {
 		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Não foi possivel alterar registro!", "error": err})
+	}
+
+	/// Quando uma manutenção é finalizada, automaticamente o sistema irá gerar uma previsão para o próximo retorno.
+	if manutencao.IsFinalizado != manutencaoAlterar.IsFinalizado {
+		previsao := new(model.ManutencaoPrevia)
+
+		/// Buscar tipo de manutenção
+		manutencaoTipo := new(model.ManutencaoTipo)
+
+		db.Table("manutencao_tipo").Find(&manutencaoTipo, "id = ?", manutencao.ManutencaoTipoId)
+
+		if manutencaoTipo.Id == 0 {
+			return c.Status(417).JSON(fiber.Map{"status": false, "message": "Classificação de manutenção não encontrada!", "manutencao": nil})
+		}
+
+		/// Gerar previsão
+		dataAtual := time.Now()
+
+		previsao.DataPrevisao = dataAtual.AddDate(0, 0, manutencaoTipo.IntervaloPrevisto)
+		previsao.KmPrevisao = (manutencao.KmAtual + manutencaoTipo.KmPrevisto)
+		previsao.UltimaManutencaoId = manutencao.Id
+		previsao.IsAprovado = true
+
+		/// Lançar previsão
+		db.Table("manutencao_previsao").Create(&previsao)
 	}
 
 	manutencao.KmAtual = manutencaoAlterar.KmAtual
@@ -143,9 +169,7 @@ func AlterarManutencao(c *fiber.Ctx) error {
 	manutencao.ManutencaoTipoId = manutencaoAlterar.ManutencaoTipoId
 	manutencao.IsFinalizado = manutencaoAlterar.IsFinalizado
 	manutencao.IsAndamento = manutencaoAlterar.IsAndamento
-	manutencao.IsCancelado = manutencaoAlterar.IsCancelado
 	manutencao.VeiculoIdTemporario = manutencaoAlterar.VeiculoIdTemporario
-	manutencao.CanceladoEm = manutencaoAlterar.CanceladoEm
 
 	errors := model.ValidateManutencao(*manutencao)
 
@@ -156,4 +180,37 @@ func AlterarManutencao(c *fiber.Ctx) error {
 	db.Table("manutencao").Save(&manutencao)
 
 	return c.JSON(fiber.Map{"status": true, "message": "Manutenção foi alterado com sucesso!"})
+}
+
+func CancelarManutencao(c *fiber.Ctx) error {
+	db := database.DB
+	manutencao := new(model.Manutencao)
+
+	id := c.Params("id")
+
+	db.Table("manutencao").Find(&manutencao, "id = ?", id)
+
+	if manutencao.Id == 0 {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Identificador da manutenção não informada!", "manutencao": nil})
+	}
+
+	if manutencao.IsCancelado {
+		return c.Status(417).JSON(fiber.Map{"status": false, "message": "Manutenção já foi cancelada!", "manutencao": nil})
+	}
+
+	/// Quando uma manutenção é finalizada, automaticamente o sistema irá gerar uma previsão para o próximo retorno.
+	/// Com isso, precisamos verificar se há previsão gerada para cancelar o mesmo.
+	if manutencao.IsFinalizado {
+		previsao := new(model.ManutencaoPrevia)
+
+		db.Table("manutencao_previsao").Find(&previsao, "ultima_manutencao_id = ?", manutencao.Id)
+
+		if previsao.Id >= 0 {
+			db.Exec("UPDATE manutencao_previsao SET is_aprovado = ?,  is_cancelado = ? where ultima_manutencao_id =  ?", false, true, manutencao.Id)
+		}
+	}
+
+	db.Exec("UPDATE manutencao SET is_finalizado = ?, is_andamento = ?,  is_cancelado = ?, cancelado_em = current_date where id =  ?", false, false, true, manutencao.Id)
+
+	return c.JSON(fiber.Map{"status": true, "message": "Manutenção cancelada com sucesso!"})
 }

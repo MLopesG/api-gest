@@ -213,6 +213,8 @@ inner join manutencao m on m.id = mp.ultima_manutencao_id
 inner join veiculo v on v.id = m.veiculo_id 
 inner join manutencao_tipo mt on mt.id = m.manutencao_tipo_id 
 where date(mp.created_at ) = current_date
+and m.is_cancelado = false
+and mp.is_cancelado = false
 order by mp.created_at desc;
 -- Listar todas previsões
 select 

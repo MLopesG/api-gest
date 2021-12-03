@@ -1,6 +1,8 @@
 package model
 
 import (
+	"time"
+
 	"github.com/go-playground/validator/v10"
 )
 
@@ -16,23 +18,23 @@ type Manutencao struct {
 	IsAndamento         bool              `json:"is_andamento"`
 	IsCancelado         bool              `json:"is_cancelado"`
 	VeiculoIdTemporario int64             `json:"veiculo_id_temporario" `
-	CanceladoEm         DateFormattedTime `json:"cancelado_em"`
+	CanceladoEm         time.Time         `json:"cancelado_em"`
 	CreatedAt           DateFormattedTime `json:"created_at"`
 	UpdatedAt           DateFormattedTime `json:"updated_at"`
 }
 
 type ManutencaoUpdate struct {
-	KmAtual             int64             `json:"km_atual"`
-	Descricao           string            `json:"descricao"`
-	ValorPago           float32           `json:"valor_pago"`
-	VeiculoId           int64             `json:"veiculo_id"`
-	UsuarioId           int64             `json:"usuario_id"`
-	ManutencaoTipoId    int64             `json:"manutencao_tipo_id"`
-	IsFinalizado        bool              `json:"is_finalizado"`
-	IsAndamento         bool              `json:"is_andamento"`
-	IsCancelado         bool              `json:"is_cancelado"`
-	CanceladoEm         DateFormattedTime `json:"cancelado_em"`
-	VeiculoIdTemporario int64             `json:"veiculo_id_temporario" `
+	KmAtual             int64     `json:"km_atual"`
+	Descricao           string    `json:"descricao"`
+	ValorPago           float32   `json:"valor_pago"`
+	VeiculoId           int64     `json:"veiculo_id"`
+	UsuarioId           int64     `json:"usuario_id"`
+	ManutencaoTipoId    int64     `json:"manutencao_tipo_id"`
+	IsFinalizado        bool      `json:"is_finalizado"`
+	IsAndamento         bool      `json:"is_andamento"`
+	IsCancelado         bool      `json:"is_cancelado"`
+	CanceladoEm         time.Time `json:"cancelado_em"`
+	VeiculoIdTemporario int64     `json:"veiculo_id_temporario" `
 }
 
 type Manuntencoes struct {

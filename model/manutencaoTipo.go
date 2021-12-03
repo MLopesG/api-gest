@@ -6,7 +6,7 @@ type ManutencaoTipo struct {
 	Id                int64             `json:"id"`
 	Descricao         string            `json:"descricao" validate:"required"`
 	KmPrevisto        int64             `json:"km_previsto" validate:"required"`
-	IntervaloPrevisto int64             `json:"intervalo_previsto" validate:"required"`
+	IntervaloPrevisto int               `json:"intervalo_previsto" validate:"required"`
 	CategoriaId       int64             `json:"categoria_id" validate:"required"`
 	CreatedAt         DateFormattedTime `json:"created_at"`
 	UpdatedAt         DateFormattedTime `json:"updated_at"`
@@ -15,7 +15,7 @@ type ManutencaoTipo struct {
 type ManutencaoTipoUpdate struct {
 	Descricao         string `json:"descricao"`
 	KmPrevisto        int64  `json:"km_previsto"`
-	IntervaloPrevisto int64  `json:"intervalo_previsto"`
+	IntervaloPrevisto int    `json:"intervalo_previsto"`
 	CategoriaId       int64  `json:"categoria_id"`
 }
 
@@ -23,7 +23,7 @@ type ManutencaoTipoCategoria struct {
 	Id                int64  `json:"id"`
 	Descricao         string `json:"descricao"`
 	KmPrevisto        int64  `json:"km_previsto"`
-	IntervaloPrevisto int64  `json:"intervalo_previsto"`
+	IntervaloPrevisto int    `json:"intervalo_previsto"`
 	CategoriaId       int64  `json:"categoria_id"`
 	Categoria         string `json:"categoria"`
 }
